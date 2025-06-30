@@ -1,0 +1,16 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Grave Custom Block RP",
+    "description": "Resource pack for grave_block",
+    "uuid": "cfe2bb80-ec7c-11ee-a2c6-123456789abc",
+    "version": [1, 0, 0]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "cfe2bb81-ec7c-11ee-a2c6-123456789abc",
+      "version": [1, 0, 0]
+    }
+  ]
+}

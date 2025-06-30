@@ -1,11 +1,11 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
-	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"id": "grave_danger_bedrock_port",
+	"version": "1.0.0",
+	"name": "Grave Danger Bedrock Port",
+	"description": "Making the Fabric mod You're In Grave Danger so that it is compatible with Bedrock.",
 	"authors": [
-		"Me!"
+		"RSlover521"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -16,24 +16,21 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.rslover521.grave_danger_bedrock_port.GraveDangerBedrockPort"
 		],
 		"client": [
-			"com.example.ExampleModClient"
+			"com.rslover521.client.CustomGraveClient"
 		]
 	},
-	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
-	],
+	
 	"depends": {
 		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.6",
+		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"floodgate": ">=2.2.3",
+		"libgui": "*",
+		"geyser-fabric": "*"
 	},
 	"suggests": {
 		"another-mod": "*"
