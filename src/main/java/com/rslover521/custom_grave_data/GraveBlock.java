@@ -53,7 +53,6 @@ import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.Vec3d;
 
-
 import net.minecraft.block.entity.BlockEntity;       
 
 import net.minecraft.item.ItemStack;         // for .hasTag(), .getTag()
@@ -97,7 +96,7 @@ public abstract class GraveBlock extends BlockWithEntity implements Waterloggabl
 
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new GraveBlockEntity(pos, state);
+        return new BedrockGraveBlockEntity(pos, state);
     }
 
     @Override

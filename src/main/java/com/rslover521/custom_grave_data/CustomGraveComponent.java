@@ -28,7 +28,7 @@ import java.util.UUID;
  */
 public class CustomGraveComponent extends GraveComponent {
     private final SimpleProfile ownerProfile;
-
+    
 	public CustomGraveComponent(
             SimpleProfile profile,
             InventoryComponent inv,

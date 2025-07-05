@@ -5,7 +5,10 @@ import org.geysermc.floodgate.api.FloodgateApi;
 
 import com.b1n_ry.yigd.block.GraveBlock;
 import com.b1n_ry.yigd.block.entity.GraveBlockEntity;
-import com.b1n_ry.yigd.components.GraveComponent; 
+import com.b1n_ry.yigd.components.GraveComponent;
+import com.rslover521.custom_grave_data.BedrockGraveBlockEntity;
+import com.rslover521.custom_grave_data.GraveBlockRegistery;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -55,7 +58,7 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	
 	public static final String MOD_ID = "grave_danger_bedrock_port";
 	
-	// These lines of code is used for Registeration
+	// These lines of code is used for block Registeration (Java)
 	public static BlockEntityType<GraveBlockEntity> CUSTOM_GRAVE_BLOCK_ENTITY;
 	@SuppressWarnings("deprecation")
 	public static final Block GRAVE_BLOCK = new GraveBlock(FabricBlockSettings.copyOf(Blocks.STONE));
@@ -72,6 +75,9 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initializing GraveDangerBedrockPort...");
+		
+		// Bedrock Block Registeration
+		GraveBlockRegistery.register();
 		
 		if (FabricLoader.getInstance().isModLoaded("geyser-fabric")) {
 			LOGGER.info("Geyser API avaliable - listener registered.");
