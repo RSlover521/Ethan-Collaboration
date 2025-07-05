@@ -91,7 +91,6 @@ dependencies {
     modImplementation "io.github.cottonmc:libgui:11.1.0+1.21"
     modImplementation "io.github.cottonmc:Jankson-Fabric:8.0.0+j1.2.3"
 	implementation("io.github.juuxel:libninepatch:1.2.0")
-	modImplementation name: 'libgui-11.1.0+1.21'
 	
 	// Geyser Fabric
 	compileOnly files('libs/geyser-fabric-Geyser-Fabric-2.4.4-b705.jar')
