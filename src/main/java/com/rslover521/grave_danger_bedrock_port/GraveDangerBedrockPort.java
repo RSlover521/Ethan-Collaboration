@@ -1,13 +1,16 @@
 package com.rslover521.grave_danger_bedrock_port;
 
+import java.util.Map;
+
 import org.geysermc.event.subscribe.Subscribe;
 import org.geysermc.floodgate.api.FloodgateApi;
 
 import com.b1n_ry.yigd.block.GraveBlock;
 import com.b1n_ry.yigd.block.entity.GraveBlockEntity;
 import com.b1n_ry.yigd.components.GraveComponent;
+import com.rslover521.custom_grave_data.BedrockGraveBlock;
 import com.rslover521.custom_grave_data.BedrockGraveBlockEntity;
-import com.rslover521.custom_grave_data.GraveBlockRegistery;
+import com.rslover521.custom_grave_data.ModBlocks;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -46,6 +49,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,42 +61,35 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	// Proceed with mild caution.
 	
 	public static final String MOD_ID = "grave_danger_bedrock_port";
-	
-	// These lines of code is used for block Registeration (Java)
-	public static BlockEntityType<GraveBlockEntity> CUSTOM_GRAVE_BLOCK_ENTITY;
-	@SuppressWarnings("deprecation")
-	public static final Block GRAVE_BLOCK = new GraveBlock(FabricBlockSettings.copyOf(Blocks.STONE));
-	
-	@SuppressWarnings("deprecation")
-	public static final BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(GraveBlockEntity::new, GRAVE_BLOCK).build();
-
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
+	
+	// These lines of code is used Registeration of grave block (Bedrock)
+	  public static final Identifier BLOCK_ID = Identifier.of(MOD_ID, "bedrock_grave_block");
+	    public static final Identifier BE_ID = Identifier.of(MOD_ID, "bedrock_grave_block_entity");
 
-	@Override
-	public void onInitialize() {
-		LOGGER.info("Initializing GraveDangerBedrockPort...");
-		
-		// Bedrock Block Registeration
-		GraveBlockRegistery.register();
-		
-		if (FabricLoader.getInstance().isModLoaded("geyser-fabric")) {
-			LOGGER.info("Geyser API avaliable - listener registered.");
-		} else {
-			LOGGER.info("Geyser API NOT available - skipping Bedrock block setup.");
-		}
-		
-		Identifier blockId = Identifier.of(MOD_ID, "grave_block");
-	    Identifier beId = Identifier.of(MOD_ID, "grave_block_entity");
+	    @SuppressWarnings("deprecation")
+		public static final Block BEDROCK_GRAVE_BLOCK = new BedrockGraveBlock(FabricBlockSettings.copyOf(Blocks.STONE));
+	    public static BlockEntityType<BedrockGraveBlockEntity> BEDROCK_GRAVE_BLOCK_ENTITY;
 
-	    // Register the Block
-	    Registry.register(Registries.BLOCK, blockId, GRAVE_BLOCK);
-	    // (Optional) Register the Block's item form
-	    Registry.register(Registries.ITEM,  blockId, new BlockItem(GRAVE_BLOCK, new Item.Settings()));
-	    
+	    @Override
+	    public void onInitialize() {
+	        // Register the block and item
+	        Registry.register(Registries.BLOCK, BLOCK_ID, BEDROCK_GRAVE_BLOCK);
+	        Registry.register(Registries.ITEM, BLOCK_ID, new BlockItem(BEDROCK_GRAVE_BLOCK, new Item.Settings()));
+
+	        // Register block entity
+	        BEDROCK_GRAVE_BLOCK_ENTITY = Registry.register(
+	            Registries.BLOCK_ENTITY_TYPE,
+	            BE_ID,
+	            FabricBlockEntityTypeBuilder.create(BedrockGraveBlockEntity::new, BEDROCK_GRAVE_BLOCK).build()
+	        );
+
+	        System.out.println("Registered BedrockGraveBlock + BlockEntity!");
+        
 	    // Geyser Registration
 	    ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 	        if (FabricLoader.getInstance().isModLoaded("geyser-fabric")) {
@@ -104,7 +101,7 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	                    // Try register(Object listener, Identifier id) method
 	                    eventBus.getClass()
 	                        .getMethod("register", Object.class, Class.forName("net.minecraft.util.Identifier"))
-	                        .invoke(eventBus, this, beId);
+	                        .invoke(eventBus, this, BE_ID);
 	                    LOGGER.info("Geyser API listener registered with identifier on server starting.");
 	                } catch (NoSuchMethodException nsme) {
 	                    // Fallback to register(Object listener)
@@ -123,8 +120,6 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	        }
 	    });
 	    
-	    // Register the BlockEntityType
-	    Registry.register(Registries.BLOCK_ENTITY_TYPE, beId, GRAVE_BLOCK_ENTITY);
 		System.out.println("GraveBlockEntity superclass: " + GraveBlockEntity.class.getSuperclass().getName());
 		System.out.println("My BlockEntity class: " + net.minecraft.block.entity.BlockEntity.class.getName());
 		
@@ -133,9 +128,18 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 		
 		LOGGER.info("My BlockEntity class: {}", BlockEntity.class.getName());
 		
+		
+		// DEBUGGING
+		Registry<Block> blockRegistry = Registries.BLOCK;
+		for (Map.Entry<RegistryKey<Block>, Block> entry : blockRegistry.getEntrySet()) {
+		    if (blockRegistry.getId(entry.getValue()).getNamespace().equals("minecraft") && blockRegistry.getId(entry.getValue()).getPath().equals("[unregistered]")) {
+		        System.out.println("Broken block: " + entry.getValue().getClass().getName());
+		    }
+		}
+		
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
 			if (isBedrockPlayer(oldPlayer)) {
-		    GraveDangerBedrockPort.LOGGER.info("Bedrock player died: {} ", oldPlayer.getName());
+		    LOGGER.info("Bedrock player died: {} ", oldPlayer.getName());
 		        }
 		    });
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
@@ -176,7 +180,7 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	        .build();
 
 	    CustomBlockData graveBlock = CustomBlockData.builder()
-	        .name("grave_block")
+	        .name("bedrock_grave_block")
 	        .components(components)
 	        .build();
 
@@ -188,7 +192,6 @@ public class GraveDangerBedrockPort implements ModInitializer, EventRegistrar {
 	    }
 	}
 }
-
 
 	
 	

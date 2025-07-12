@@ -29,8 +29,8 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"floodgate": ">=2.2.3",
-		"libgui": "*",
-		"geyser-fabric": "*"
+		"geyser-fabric": "*",
+		"yigd": "*"
 	},
 	"suggests": {
 		"another-mod": "*"
