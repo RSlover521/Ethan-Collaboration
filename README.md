@@ -1,9 +1,7 @@
-# Fabric Example Mod
+## Grave Danger Bedrock Port Mod
+A mod that unofficially ports the YIGD mod from Minecraft Curse forge so that Bedrock players can use it. Get it get it?
 
-## Setup
+## Dependencies
+Fabric API, Floodgate Fabric API, Geyser-Fabric API, YIGD.
 
-For setup instructions please see the [fabric documentation page](https://docs.fabricmc.net/develop/getting-started/setting-up-a-development-environment) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+# NOTE: This mod is currently not finished!
