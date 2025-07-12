@@ -4,4 +4,4 @@ A mod that unofficially ports the YIGD mod from Minecraft Curse forge so that Be
 ## Dependencies
 Fabric API, Floodgate Fabric API, Geyser-Fabric API, YIGD.
 
-# NOTE: This mod is currently not finished!
+# NOTE: This mod is currently not finished! Please use it wisely!
